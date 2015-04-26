@@ -14,15 +14,15 @@
     {
       "name": "favorite_number",
       "type": [
-        "int",
-        "null"
+        "null",
+        "int"
       ]
     },
     {
       "name": "favorite_color",
       "type": [
-        "string",
-        "null"
+        "null",
+        "string"
       ]
     }
   ]

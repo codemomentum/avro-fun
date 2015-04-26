@@ -1,0 +1,45 @@
+{
+  "namespace": "org.codemomentum.avro",
+  "type": "record",
+  "name": "Person",
+  "fields": [
+    {
+      "name": "age",
+      "type": "int"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "favorite_prime_number",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "favorite_number",
+      "type": [
+        "null",
+        "int"
+      ]
+    },
+    {
+      "name": "favorite_color",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "name": "favorite_car",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    }
+  ]
+}

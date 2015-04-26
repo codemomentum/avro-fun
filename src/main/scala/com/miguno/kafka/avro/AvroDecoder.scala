@@ -1,10 +1,12 @@
+//https://github.com/miguno/kafka-avro-codec
+
 package com.miguno.kafka.avro
 
 import kafka.serializer.Decoder
 import kafka.utils.VerifiableProperties
 import org.apache.avro.Schema
+import org.apache.avro.generic.{GenericDatumReader, GenericRecord}
 import org.apache.avro.io.{BinaryDecoder, DatumReader, DecoderFactory}
-import org.apache.avro.specific.{SpecificDatumReader, SpecificRecordBase}
 
 /**
  * We must explicitly require the user to supply the schema -- even though it is readily available through T -- because
@@ -19,16 +21,29 @@ import org.apache.avro.specific.{SpecificDatumReader, SpecificRecordBase}
  * @param schema The schema of T, which you can get via `T.getClassSchema`.
  * @tparam T The type of the record, which must be backed by an Avro schema (passed via `schema`)
  */
-class AvroDecoder[T <: SpecificRecordBase](props: VerifiableProperties = null, schema: Schema)
+class AvroDecoder[T <: GenericRecord](props: VerifiableProperties = null, schema: Schema)
   extends Decoder[T] {
 
   private[this] val NoBinaryDecoderReuse = null.asInstanceOf[BinaryDecoder]
   private[this] val NoRecordReuse = null.asInstanceOf[T]
-  private[this] val reader: DatumReader[T] = new SpecificDatumReader[T](schema)
+  private[this] val reader: DatumReader[T] = new GenericDatumReader[T](schema)
 
   override def fromBytes(bytes: Array[Byte]): T = {
     val decoder = DecoderFactory.get().binaryDecoder(bytes, NoBinaryDecoderReuse)
     reader.read(NoRecordReuse, decoder)
   }
 
+}
+
+class AvroDecoderWithRegistry[T <: GenericRecord](props: VerifiableProperties = null, s1: Schema, s2: Schema)
+  extends Decoder[T] {
+
+  private[this] val NoBinaryDecoderReuse = null.asInstanceOf[BinaryDecoder]
+  private[this] val NoRecordReuse = null.asInstanceOf[T]
+  private[this] val reader: DatumReader[T] = new GenericDatumReader[T](s1, s2)
+
+  override def fromBytes(bytes: Array[Byte]): T = {
+    val decoder = DecoderFactory.get().binaryDecoder(bytes, NoBinaryDecoderReuse)
+    reader.read(NoRecordReuse, decoder)
+  }
 }

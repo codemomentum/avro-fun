@@ -1,0 +1,39 @@
+{
+  "namespace": "org.codemomentum.avro",
+  "type": "record",
+  "name": "Uber",
+  "fields": [
+    {
+      "name": "log1_field1",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "log2_field1",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "log1_field2",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "log2_field2",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    }
+  ]
+}

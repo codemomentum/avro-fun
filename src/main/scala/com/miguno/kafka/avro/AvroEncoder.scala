@@ -1,3 +1,5 @@
+//https://github.com/miguno/kafka-avro-codec
+
 package com.miguno.kafka.avro
 
 import java.io.ByteArrayOutputStream
@@ -5,8 +7,8 @@ import java.io.ByteArrayOutputStream
 import kafka.serializer.Encoder
 import kafka.utils.VerifiableProperties
 import org.apache.avro.Schema
+import org.apache.avro.generic.{GenericDatumWriter, GenericRecord}
 import org.apache.avro.io._
-import org.apache.avro.specific.{SpecificDatumWriter, SpecificRecordBase}
 
 /**
  * We must explicitly require the user to supply the schema -- even though it is readily available through T -- because
@@ -21,11 +23,11 @@ import org.apache.avro.specific.{SpecificDatumWriter, SpecificRecordBase}
  * @param schema The schema of T, which you can get via `T.getClassSchema`.
  * @tparam T The type of the record, which must be backed by an Avro schema (passed via `schema`)
  */
-class AvroEncoder[T <: SpecificRecordBase](props: VerifiableProperties = null, schema: Schema)
+class AvroEncoder[T <: GenericRecord](props: VerifiableProperties = null, schema: Schema)
   extends Encoder[T] {
 
   private[this] val NoBinaryEncoderReuse = null.asInstanceOf[BinaryEncoder]
-  private[this] val writer: DatumWriter[T] = new SpecificDatumWriter[T](schema)
+  private[this] val writer: DatumWriter[T] = new GenericDatumWriter[T](schema)
 
   override def toBytes(record: T): Array[Byte] = {
     if (record == null) null
